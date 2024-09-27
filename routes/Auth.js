@@ -8,6 +8,7 @@ const response = require("../utils/ResponseHandlers"); // response handler
 
 // register route
 router.post("/register", async (req, res) => {
+      
       console.log(req.body)
   try {
     const { firstName, lastName, email, password, contact, category } = req.body; // getting user data
@@ -42,7 +43,7 @@ router.post('/login', async (req,res)=>{
                   const checkUserPassword = await bcrypt.compare(password.toString(), checkUserExistence['password']); // comparing password
                   if(checkUserPassword){
                         const token = jwt.sign({email:email, userId: checkUserExistence['_id']}, process.env.JWT_SECRET); // generating token
-                        response(res, 200, "Logged In Successfully!!!", {token:token}); // sending token
+                        response(res, 200, "Logged In Successfully!!!", {token:token,userId:checkUserExistence['_id'],email:checkUserExistence['email']}); // sending token
                   }
             }else{
                   response(res, 200, "User not found", null); // user not found
