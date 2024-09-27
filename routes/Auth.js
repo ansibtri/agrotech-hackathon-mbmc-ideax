@@ -8,8 +8,9 @@ const response = require("../utils/ResponseHandlers"); // response handler
 
 // register route
 router.post("/register", async (req, res) => {
+      console.log(req.body)
   try {
-    const { firstName, lastName, email, password, contact } = req.body; // getting user data
+    const { firstName, lastName, email, password, contact, category } = req.body; // getting user data
     const checkUserExists = await User.findOne({email: email}); // checking if user already exists
     if (checkUserExists) {
       return response(res, 200, "User already exists", null);
@@ -21,9 +22,10 @@ router.post("/register", async (req, res) => {
       email,
       password: await bcrypt.hash(password, salt), // hashing password
       contact,
+      category,
     });
     await user.save();
-    response(res, 200, "User registered successfully", {firstName, lastName, email, contact});
+    response(res, 200, "User registered successfully", {firstName, lastName, email, contact,category});
   } catch (error) {
     response(res, 500, "Internal server error", {error: error.message});
   }
