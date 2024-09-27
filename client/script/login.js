@@ -11,7 +11,6 @@ function login(e){
       const password = document.getElementById("password").value;
       const error = document.getElementById("error");
       const data = {email: email, password: password};
-      console.log(data)
       try{
             fetch(LOGIN_URL, {
                   method: "POST",
@@ -24,7 +23,9 @@ function login(e){
                   if(response['status'] === 200){
                         console.log(response['data']['token'])
                         sessionStorage.setItem("token", JSON.stringify(response['data']['token']));
-                        window.location.href = "/dashboard";
+                        sessionStorage.setItem("userId", JSON.stringify(response['data']['userId']));
+                        sessionStorage.setItem("email", JSON.stringify(response['data']['email']));
+                        window.location.href = "../dashboard.html";
                   }else{
                         error.innerHTML = response['message'];
                   }
