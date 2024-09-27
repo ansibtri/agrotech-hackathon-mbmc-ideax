@@ -1,13 +1,19 @@
-const express = require('express');
+require("dotenv").config()
+const express = require("express");
 const app = express();
-
+const bodyParser = require("body-parser");
+const morgan = require("morgan");
+const { connect } = require("./Database.js");
+const Auth = require("./routes/Auth");
+connect()
 
 const PORT = process.env.PORT || 3000;
 
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(morgan("common"))
+app.use(bodyParser.json());
+app.use('/api/auth', Auth); // setting up routes
 
-app.get('/',(req,res)=>{
-      res.json("Hello, This is agrotech")
-})
-app.listen(PORT, ()=>{
-      console.log(`Server is listening at ${PORT}`);
-})
+app.listen(PORT, () => {
+  console.log(`Server is listening at ${PORT}`);
+});
